@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación Firebase</title>
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- navegacion -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item nav-ingresar" style="display: none;">
+                        <a class="nav-link" href="#" data-toggle="modal" 
+                        data-target="#ingresar-modal">Ingresar</a>
+                    </li>
+                    <li class="nav-item nav-ingresar" style="display: none;">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#registro-modal">Registrar</a>
+                    </li>
+                    <li class="nav-item nav-desconectar" style="display: none;">
+                        <a class="nav-link" href="#" id="desconectar">Desconectar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Contenido principal -->
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <ul class="list-group" id="posts">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- modal ingresar -->
+    <div class="modal" id="ingresar-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ingresar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="ingresar-form">
+                        <div class="form-group">
+                            <input type="text" id="ingresar-correo" class="form-control"
+                                placeholder="Correo electronico" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="ingresar-contraseña" class="form-control"
+                                placeholder="Contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-block">Ingresar</button>
+                        <button type="button" id="ingresar-google" class="btn btn-info btn-block">Ingresar con Google</button>
+                        <button type="button" id="ingresar-facebook" class="btn btn-primary btn-block">Ingresar con facebook</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal registro -->
+    <div class="modal" id="registro-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="registrar-form">
+                        <div class="form-group">
+                            <input type="text" id="registro-correo" class="form-control"
+                                placeholder="Correo electronico" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="registro-contraseña" class="form-control"
+                                placeholder="Contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap script -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+    <!-- Firebase script -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+
+
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAyCUt7477huJYGaiEsgMw2SVGyjgz5wHQ",
+            authDomain: "auth-firebase-bee05.firebaseapp.com",
+            databaseURL: "https://auth-firebase-bee05.firebaseio.com",
+            projectId: "auth-firebase-bee05",
+            storageBucket: "auth-firebase-bee05.appspot.com",
+            messagingSenderId: "232598557967",
+            appId: "1:232598557967:web:7206632ef18ff3f0c91a7a"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <!-- mi script -->
+    <script src="main.js"></script>
+</body>
+
+</html>
